@@ -1,0 +1,4 @@
+superlists/__pycache__
+*.sqlite3
+*.nja
+*.pyc
