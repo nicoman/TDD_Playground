@@ -71,6 +71,24 @@ class NewVisitorTest(LiveServerTestCase):
         self.assertNotIn('But peacock feathers', page_text)
         self.assertNotIn('make a fly', page_text)
 
+        # Francis starts a new list by entering a new item. He is less interesting
+        # than Edith...
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        inputbox.send_keys('Buy milk')
+        inputbox.send_keys(Keys.ENTER)
+
+        # Francis gets his own unique URL
+        francis_list_url = self.browser.current_url
+        self.assertRegex(francis_list_url, '/lists/.+')
+        self.assertNotEqual(francis_list_url, edith_list_url)
+
+        # Again, there is no trace of Edith's list
+        page_text = self.browser.find_element_by_tag_name('body').text
+        self.assertNotIn('Buy peacock feathers', page_text)
+        self.assertIn('Buy milk', page_text)
+
+        # Satisfied, they both go back to sleep
+
         # Edith wonders whether the site will remember her list. Then she sees that the
         # site has generated a unique URL for her -- there is some explanatory text
         # to that effect.
